@@ -25,14 +25,19 @@
 	("7" (lambda () (interactive) (vine-append-counter-value "7")))
 	("8" (lambda () (interactive) (vine-append-counter-value "8")))
 	("9" (lambda () (interactive) (vine-append-counter-value "9")))
+	("0")
 	("D" duplicate-current-line)
+	("h" left-char)
 	("i" vine-insert-mode)
-       ("j" previous-line)
-       ))
+	("j" (lambda() (interactive) (vine-next-line nil)))
+	("k" (lambda() (interactive) (vine-next-line t)))
+	("l" right-char)
+	))
 
 (defun vine-normal-mode ()
   "Start vine normal mode"
   (interactive)
+  (vine-reset-state)
   (if (member
        (format "%s" major-mode) $vine-white-list-mode)
       (progn
@@ -46,8 +51,7 @@
 	(unless (eq $vine-active-mode $vine-normal-mode)
 	  (progn 
 	    (vine-process-command-list t)
-	    (setq $vine-active-mode $vine-normal-mode)
-	    (vine-reset-state)))
+	    (setq $vine-active-mode $vine-normal-mode)))
 	(message "%s" $vine-active-mode))
     (emacspeak-auditory-icon 'off)))
 
@@ -86,3 +90,23 @@ If NORMAL-MODE is t then start normal mode"
   (interactive)
   (setq $vine-counter (concat $vine-counter VALUE)))
 
+(defun vine-get-counter-value()
+  "Get counter value in number format"
+  (let (
+	($counter (string-to-number $vine-counter)))
+    (if (> $counter 1)
+	$counter
+      1)))
+(defun vine-next-line(FORWARD)
+  "Goto next line if FORWARD is t. Otherwise goto previous line.
+The number of lines depends on $vine-counter"
+  (interactive)
+  (if FORWARD
+	(next-line (vine-get-counter-value))
+    (previous-line (vine-get-counter-value)))
+  (vine-reset-state)
+  (emacspeak-speak-line))
+
+;; For testing purpose
+(setq $vine-active-mode "nil")
+(vine-get-counter-value)
