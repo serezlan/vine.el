@@ -27,11 +27,11 @@
 	("9" (lambda () (interactive) (vine-append-counter-value "9")))
 	("0")
 	("D" duplicate-current-line)
-	("h" left-char)
 	("i" vine-insert-mode)
+	("h" (lambda () (interactive) (vine-right-char nil)))
 	("j" (lambda() (interactive) (vine-next-line nil)))
 	("k" (lambda() (interactive) (vine-next-line t)))
-	("l" right-char)
+	("l" (lambda () (interactive) (vine-right-char t)))
 	))
 
 (defun vine-normal-mode ()
@@ -107,6 +107,17 @@ The number of lines depends on $vine-counter"
   (vine-reset-state)
   (emacspeak-speak-line))
 
+(defun vine-right-char (RIGHT)
+  "If RIGHT is t then goto right char. Otherwise goto left char.
+The number of char depend on $vine-counter"
+  (interactive)
+  (if RIGHT
+      (right-char (vine-get-counter-value))
+    (left-char (vine-get-counter-value)))
+  (vine-reset-state)
+  (setq current-prefix-arg 4)
+  (call-interactively 'emacspeak-speak-char))
+
 ;; For testing purpose
 (setq $vine-active-mode "nil")
-(vine-get-counter-value)
+
