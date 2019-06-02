@@ -3,6 +3,7 @@
 ;; Set global key to start vine
 (global-set-key (kbd "<escape>") 'vine-normal-mode)
 
+(defvar $vine-counter "0" "Holds the value for action repetition")
 (defvar $vine-active-mode "nil" "Define current buffer vine mode")
 (defvar $vine-normal-mode "normal" "Define state of normal mode")
 (defvar $vine-insert-mode "insert" "Define vine insert mode state value")
@@ -15,6 +16,9 @@
 
 (setq $vine-command-list
       '(
+	("1" (lambda () (interactive) (vine-append-counter-value "1")))
+	("2" (lambda () (interactive) (vine-append-counter-value "2")))
+	("D" duplicate-current-line)
 	("i" vine-insert-mode)
        ("j" previous-line)
        ))
@@ -35,11 +39,11 @@
 	(unless (eq $vine-active-mode $vine-normal-mode)
 	  (progn 
 	    (vine-process-command-list t)
-	    (setq $vine-active-mode $vine-normal-mode)))
-
-	(message "%s mode" $vine-active-mode))
+	    (setq $vine-active-mode $vine-normal-mode)
+	    (vine-reset-state)))
+	(message "%s" $vine-active-mode))
     (emacspeak-auditory-icon 'off)))
-    
+
 (defun vine-insert-mode ()
   "Start vine insert mode"
   (interactive)
@@ -65,3 +69,13 @@ If NORMAL-MODE is t then start normal mode"
 
       ;; Decrese loop list
       (setq $command-list (cdr $command-list)))))
+
+(defun vine-reset-state ()
+  "Reset vine state of current buffer"
+  (setq $vine-counter "0"))
+
+(defun vine-append-counter-value (VALUE)
+  "Append value of $vine-counter"
+  (interactive)
+  (setq $vine-counter (concat $vine-counter VALUE))
+  (message $vine-counter))
