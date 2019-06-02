@@ -25,7 +25,7 @@
 	("7" (lambda () (interactive) (vine-append-counter-value "7")))
 	("8" (lambda () (interactive) (vine-append-counter-value "8")))
 	("9" (lambda () (interactive) (vine-append-counter-value "9")))
-	("0")
+	("0"vine-zero-key-press)
 	("D" duplicate-current-line)
 	("i" vine-insert-mode)
 	("h" (lambda () (interactive) (vine-right-char nil)))
@@ -117,6 +117,15 @@ The number of char depend on $vine-counter"
   (vine-reset-state)
   (setq current-prefix-arg 4)
   (call-interactively 'emacspeak-speak-char))
+
+(defun vine-zero-key-press ()
+  "If $vine-counter > 0 then append char 0 to it. Otherwise goto beginning of line"
+  (interactive)
+  (if (> (string-to-number $vine-counter) 0)
+      (vine-append-counter-value "0")
+    (progn
+      (beginning-of-line)
+      (emacspeak-speak-line))))
 
 ;; For testing purpose
 (setq $vine-active-mode "nil")
