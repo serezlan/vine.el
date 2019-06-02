@@ -18,6 +18,13 @@
       '(
 	("1" (lambda () (interactive) (vine-append-counter-value "1")))
 	("2" (lambda () (interactive) (vine-append-counter-value "2")))
+	("3" (lambda () (interactive) (vine-append-counter-value "3")))
+	("4" (lambda () (interactive) (vine-append-counter-value "4")))
+	("5" (lambda () (interactive) (vine-append-counter-value "5")))
+	("6" (lambda () (interactive) (vine-append-counter-value "6")))
+	("7" (lambda () (interactive) (vine-append-counter-value "7")))
+	("8" (lambda () (interactive) (vine-append-counter-value "8")))
+	("9" (lambda () (interactive) (vine-append-counter-value "9")))
 	("D" duplicate-current-line)
 	("i" vine-insert-mode)
        ("j" previous-line)
@@ -77,5 +84,5 @@ If NORMAL-MODE is t then start normal mode"
 (defun vine-append-counter-value (VALUE)
   "Append value of $vine-counter"
   (interactive)
-  (setq $vine-counter (concat $vine-counter VALUE))
-  (message $vine-counter))
+  (setq $vine-counter (concat $vine-counter VALUE)))
+
