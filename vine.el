@@ -1,5 +1,12 @@
 (global-set-key (kbd "<escape>") 'vine-normal-mode)
-	
+
+(defvar $vine-white-list-mode
+  '(
+    "emacs-lisp-mode"
+    "lisp-interaction-mode"
+    )
+  "Holds the list of major mode where vine can run")
+
 (setq $vine-command-list
       '(
 	("i" vine-insert-mode)
@@ -9,9 +16,13 @@
 (defun vine-normal-mode ()
   "Start vine normal mode"
   (interactive)
-  (message "normal mode")
-  (vine-process-command-list t))
-
+  (if (member
+       (format "%s" major-mode) $vine-white-list-mode)
+      (progn
+	(vine-process-command-list t)
+	(message "Normal Mode"))
+    (emacspeak-auditory-icon 'off)))
+    
 (defun vine-insert-mode ()
   "Start vine insert mode"
   (interactive)
