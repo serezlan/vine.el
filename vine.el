@@ -4,7 +4,8 @@
 (global-set-key (kbd "<escape>") 'vine-normal-mode)
 
 (defvar $vine-counter "0" "Holds the value for action repetition")
-(defvar $vine-active-mode "nil" "Define current buffer vine mode")
+(defconst $vine-initial-state "init" "Define initial state of each new buffer")
+(defvar $vine-active-mode $vine-initial-state "Define current buffer vine mode")
 (defvar $vine-normal-mode "normal" "Define state of normal mode")
 (defvar $vine-insert-mode "insert" "Define vine insert mode state value")
 (defvar $vine-white-list-mode
@@ -53,9 +54,9 @@
       (progn
 	;; Create local variable first time
 	;; Set to insert mode initially
-	(if (eq $vine-active-mode "nil")
+	(if (string-equal $vine-active-mode $vine-initial-state)
 	  (progn
-	    (make-local-variable $vine-active-mode)
+	    (make-local-variable '$vine-active-mode)
 	    (setq $vine-active-mode $vine-insert-mode)))
 
 	(unless (eq $vine-active-mode $vine-normal-mode)
@@ -175,5 +176,5 @@ By default it inserts below current line"
   (end-of-line)
   (emacspeak-speak-line))
 	;; For testing purpose
-(setq $vine-active-mode "nil")
+(setq $vine-active-mode $vine-initial-state)
 
