@@ -32,6 +32,8 @@
 	("j" (lambda() (interactive) (vine-next-line nil)))
 	("k" (lambda() (interactive) (vine-next-line t)))
 	("l" (lambda () (interactive) (vine-right-char t)))
+	("w" (lambda() (interactive)  (vine-forward-word t)))
+	("b" (lambda() (interactive)  (vine-forward-word nil)))
 	))
 
 (defun vine-normal-mode ()
@@ -125,7 +127,19 @@ The number of char depend on $vine-counter"
       (vine-append-counter-value "0")
     (progn
       (beginning-of-line)
-      (emacspeak-speak-line))))
+      (emacspeak-speak-line))))()
+
+(defun vine-forward-word (FORWARD)
+  "Forward word if FORWARD is t. Otherwise go backward."
+  (interactive)
+  (let (
+	($counter (vine-get-counter-value))
+	)
+    (unless FORWARD
+      (setq $counter (* $counter -1)))
+    (forward-word $counter)
+    (vine-reset-state)
+    (emacspeak-speak-word)))
 
 ;; For testing purpose
 (setq $vine-active-mode "nil")
