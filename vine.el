@@ -29,6 +29,8 @@
 	("0"vine-zero-key-press)
 	("b" (lambda() (interactive)  (vine-forward-word nil)))
 	("D" duplicate-current-line)
+	("g" vine-goto-line)
+	("G" beginning-of-buffer)
 	("i" vine-insert-mode)
 	("h" (lambda () (interactive) (vine-right-char nil)))
 	("j" (lambda() (interactive) (vine-next-line nil)))
@@ -175,6 +177,26 @@ By default it inserts below current line"
   (interactive)
   (end-of-line)
   (emacspeak-speak-line))
+
+(defun vine-goto-line ()
+  "Goto line. If user press 'g' twice it will go to the end of buffer"
+  (interactive)
+  (let (
+	($line-number (string-to-number $vine-counter))
+	$keystroke 
+	)
+    (if (= $line-number 0)
+	(progn
+	  ;; Wait for user to press another 'g' key 
+	  (setq $keystroke (read-char ""))
+	  (if (= $keystroke 103)
+	      (end-of-buffer)
+	    (emacspeak-auditory-icon 'off)))
+      (progn
+	;; Here we jump to line number xx
+	(goto-line $line-number)))
+    (emacspeak-speak-line)))
+
+	  
 	;; For testing purpose
 (setq $vine-active-mode $vine-initial-state)
-
