@@ -150,11 +150,20 @@ The number of char depend on $vine-counter"
   (let (
 	($counter (vine-get-counter-value))
 	)
-    (unless FORWARD
-      (setq $counter (* $counter -1)))
-    (forward-word $counter)
-    (vine-reset-state)
-    (emacspeak-speak-word)))
+    (if (string-equal $vine-leader-command $vine-delete-command)
+	(progn
+	  ;; Delete word
+	  (kill-word $counter)
+	  (vine-reset-state)
+	  (emacspeak-speak-line)
+	  (emacspeak-auditory-icon 'modified-object))
+      (progn
+	;; Usual forward word 
+	(unless FORWARD
+	  (setq $counter (* $counter -1)))
+	(forward-word $counter)
+	(vine-reset-state)
+	(emacspeak-speak-word)))))
 
 (defun vine-insert-blank-line (&optional ABOVE)
   "If ABOVE is t then insert new line above current line. Otherwise insert below current line.
