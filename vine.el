@@ -174,6 +174,7 @@ By default it inserts below current line"
 	(newline $counter)
 	(message "Open blank lines below")))
     (emacspeak-auditory-icon 'modified-object)
+    (vine-insert-mode)
     (vine-reset-state)))
 
 (defun vine-end-of-line()
