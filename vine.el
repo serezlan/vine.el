@@ -26,14 +26,16 @@
 	("8" (lambda () (interactive) (vine-append-counter-value "8")))
 	("9" (lambda () (interactive) (vine-append-counter-value "9")))
 	("0"vine-zero-key-press)
+	("b" (lambda() (interactive)  (vine-forward-word nil)))
 	("D" duplicate-current-line)
 	("i" vine-insert-mode)
 	("h" (lambda () (interactive) (vine-right-char nil)))
 	("j" (lambda() (interactive) (vine-next-line nil)))
 	("k" (lambda() (interactive) (vine-next-line t)))
 	("l" (lambda () (interactive) (vine-right-char t)))
+	("o" (lambda () (interactive) (vine-insert-blank-line)))
+	("O" (lambda () (interactive) (vine-insert-blank-line t)))
 	("w" (lambda() (interactive)  (vine-forward-word t)))
-	("b" (lambda() (interactive)  (vine-forward-word nil)))
 	))
 
 (defun vine-normal-mode ()
@@ -141,6 +143,26 @@ The number of char depend on $vine-counter"
     (vine-reset-state)
     (emacspeak-speak-word)))
 
-;; For testing purpose
+(defun vine-insert-blank-line (&optional ABOVE)
+  "If ABOVE is t then insert new line above current line. Otherwise insert below current line.
+By default it inserts below current line"
+  (interactive)
+  (let (
+	($counter (vine-get-counter-value))
+	)
+    (if ABOVE
+	(progn
+	  (beginning-of-line)
+	  (open-line $counter)
+	  (indent-for-tab-command)
+	  (message "Open blank lines above"))
+      (progn
+	(end-of-line)
+	(newline $counter)
+	(message "Open blank lines below")))
+    (emacspeak-auditory-icon 'modified-object)
+    (vine-reset-state)))
+
+	;; For testing purpose
 (setq $vine-active-mode "nil")
 
