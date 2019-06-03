@@ -39,6 +39,7 @@
 	("w" (lambda() (interactive)  (vine-forward-word t)))
 	("{" beginning-of-defun)
 	("}" end-of-defun)
+	("$"  vine-end-of-line)
 	("^" (lambda () (interactive) (back-to-indentation) (emacspeak-speak-line)))
 	))
 ;; ##
@@ -168,6 +169,11 @@ By default it inserts below current line"
     (emacspeak-auditory-icon 'modified-object)
     (vine-reset-state)))
 
+(defun vine-end-of-line()
+  "Go to end of line"
+  (interactive)
+  (end-of-line)
+  (emacspeak-speak-line))
 	;; For testing purpose
 (setq $vine-active-mode "nil")
 
