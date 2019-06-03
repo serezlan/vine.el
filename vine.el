@@ -35,9 +35,11 @@
 	("l" (lambda () (interactive) (vine-right-char t)))
 	("o" (lambda () (interactive) (vine-insert-blank-line)))
 	("O" (lambda () (interactive) (vine-insert-blank-line t)))
+("r" emacspeak-speak-line)
 	("w" (lambda() (interactive)  (vine-forward-word t)))
 	("{" beginning-of-defun)
 	("}" end-of-defun)
+	("^" (lambda () (interactive) (back-to-indentation) (emacspeak-speak-line)))
 	))
 ;; ##
 
