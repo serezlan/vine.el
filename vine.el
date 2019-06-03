@@ -32,6 +32,7 @@
 	("b" (lambda() (interactive)  (vine-forward-word nil)))
 	("d" vine-delete)
 	("D" duplicate-current-line)
+	("f" vine-find-char-in-line)
 	("g" vine-goto-line)
 	("G" beginning-of-buffer)
 	("i" vine-insert-mode)
@@ -234,6 +235,27 @@ By default it inserts below current line"
   (if LINE
       (beginning-of-line))
   (call-interactively 'set-mark-command))
+(defun vine-find-char-in-line()
+  "Find a char in line. Move point after target char if found"
+  (interactive)
+  (let (
+	($starting-line (line-number-at-pos))
+	($start-pos (point))
+	$end-pos
+	$char
+	)
+    (setq $char (read-char ""))
+    (setq $end-pos (search-forward (format "%c" $char) nil t))
+    (print $end-pos)
+    (if (and 
+	 $end-pos
+	 (= $starting-line (line-number-at-pos $end-pos)))
+	(progn 
+	  ;; We have a match)))
+	  (emacspeak-speak-line -1))
+      (progn
+	(goto-char $start-pos)
+	(emacspeak-auditory-icon 'off)))))
 
-;; For testing purpose
+    ;; For testing purpose
 (setq $vine-active-mode $vine-initial-state)
