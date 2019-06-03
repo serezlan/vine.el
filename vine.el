@@ -5,6 +5,8 @@
 
 (defvar $vine-counter "0" "Holds the value for action repetition")
 (defconst $vine-initial-state "init" "Define initial state of each new buffer")
+(defconst $vine-delete-command "delete" "Define the value of delete command")
+(defvar $vine-leader-command $vine-initial-state "Holds the value of leader command")
 (defvar $vine-active-mode $vine-initial-state "Define current buffer vine mode")
 (defvar $vine-normal-mode "normal" "Define state of normal mode")
 (defvar $vine-insert-mode "insert" "Define vine insert mode state value")
@@ -28,6 +30,7 @@
 	("9" (lambda () (interactive) (vine-append-counter-value "9")))
 	("0"vine-zero-key-press)
 	("b" (lambda() (interactive)  (vine-forward-word nil)))
+	("d" vine-delete)
 	("D" duplicate-current-line)
 	("g" vine-goto-line)
 	("G" beginning-of-buffer)
@@ -96,6 +99,7 @@ If NORMAL-MODE is t then start normal mode"
 
 (defun vine-reset-state ()
   "Reset vine state of current buffer"
+  (setq $vine-leader-command $vine-initial-state)
   (setq $vine-counter "0"))
 
 (defun vine-append-counter-value (VALUE)
@@ -197,6 +201,20 @@ By default it inserts below current line"
 	(goto-line $line-number)))
     (emacspeak-speak-line)))
 
-	  
-	;; For testing purpose
+(defun vine-delete()
+  "Delete line, word or char, delete inside deleimiter or delete until certain char"
+  (interactive)
+  (let (
+	($counter (vine-get-counter-value))
+	)
+    (if (string-equal $vine-leader-command $vine-initial-state)
+	(setq $vine-leader-command $vine-delete-command)
+      (progn
+	;; Here we delete lines
+	(kill-whole-line $counter)
+	(vine-reset-state)
+	(emacspeak-auditory-icon 'modified-object)
+	))))
+
+    ;; For testing purpose
 (setq $vine-active-mode $vine-initial-state)
