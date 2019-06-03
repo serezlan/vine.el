@@ -36,7 +36,10 @@
 	("o" (lambda () (interactive) (vine-insert-blank-line)))
 	("O" (lambda () (interactive) (vine-insert-blank-line t)))
 	("w" (lambda() (interactive)  (vine-forward-word t)))
+	("{" beginning-of-defun)
+	("}" end-of-defun)
 	))
+;; ##
 
 (defun vine-normal-mode ()
   "Start vine normal mode"
