@@ -42,6 +42,9 @@
 	("o" (lambda () (interactive) (vine-insert-blank-line)))
 	("O" (lambda () (interactive) (vine-insert-blank-line t)))
 ("r" emacspeak-speak-line)
+("u" undo-tre)
+("v"vine-visual-mode)
+("V"(lambda () (interactive) (vine-visual-mode t)))
 	("w" (lambda() (interactive)  (vine-forward-word t)))
 	("{" beginning-of-defun)
 	("}" end-of-defun)
@@ -225,6 +228,12 @@ By default it inserts below current line"
 	(vine-reset-state)
 	(emacspeak-auditory-icon 'modified-object)
 	))))
+(defun vine-visual-mode (&optional LINE)
+  "Start visual mode. If LINE is t then start visual line mode"
+  (interactive)
+  (if LINE
+      (beginning-of-line))
+  (call-interactively 'set-mark-command))
 
-    ;; For testing purpose
+;; For testing purpose
 (setq $vine-active-mode $vine-initial-state)
