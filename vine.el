@@ -48,12 +48,14 @@
 ("v"vine-visual-mode)
 ("V"(lambda () (interactive) (vine-visual-mode t)))
 	("w" (lambda() (interactive)  (vine-forward-word t)))
+	("x" vine-delete-char)
 	("{" beginning-of-defun)
 	("}" end-of-defun)
 	("$"  vine-end-of-line)
 	("^" (lambda () (interactive) (back-to-indentation) (emacspeak-speak-line)))
 	))
 ;; ##
+
 
 (defun vine-normal-mode ()
   "Start vine normal mode"
@@ -323,5 +325,12 @@ $delimiter
       (vine-delete-inside-delemiter)
     (vine-insert-mode)))
 
+(defun vine-delete-char()
+  "Delete char or cut region if region active"
+  (interactive)
+  (if (region-active-p)
+      (call-interactively 'kill-region)
+    (call-interactively 'delete-forward-char)))
+  
  ;; For testing purpose
 (setq $vine-active-mode $vine-initial-state)
