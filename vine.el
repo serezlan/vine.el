@@ -44,6 +44,8 @@
 	("l" (lambda () (interactive) (vine-right-char t)))
 	("o" (lambda () (interactive) (vine-insert-blank-line)))
 	("O" (lambda () (interactive) (vine-insert-blank-line t)))
+	("p" yank)
+	("P" yank-pop)
 ("r" emacspeak-speak-line)
 ("u" vine-u-key-pressed)
 ("v"vine-visual-mode)
