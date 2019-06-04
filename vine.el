@@ -193,6 +193,7 @@ By default it inserts below current line"
 	(end-of-line)
 	(newline $counter)
 	(message "Open blank lines below")))
+    (indent-for-tab-command)
     (emacspeak-auditory-icon 'modified-object)
     (vine-reset-state)
     (vine-insert-mode)))
