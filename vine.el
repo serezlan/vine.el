@@ -36,7 +36,7 @@
 	("f" vine-find-char-in-line)
 	("g" vine-goto-line)
 	("G" beginning-of-buffer)
-	("i" vine-insert-mode)
+	("i" vine-i-key-pressed)
 	("h" (lambda () (interactive) (vine-right-char nil)))
 	("j" (lambda() (interactive) (vine-next-line nil)))
 	("k" (lambda() (interactive) (vine-next-line t)))
@@ -293,6 +293,35 @@ By default it inserts below current line"
 	  (progn
 	    (emacspeak-auditory-icon 'modified-object)
 	    (emacspeak-speak-line))))))
+(defun vine-delete-inside-delemiter()
+  "Delete all characters inside delimiter"
+  (interactive)
+  (save-excursion
+    (let (
+	  ($start-pos (point))
+	  $end-pos
+$temp-pos
+$delimiter
+	  )
+      (vine-reset-state)
+      (setq $delimiter (read-char ""))
+      (setq $end-pos (search-forward (format "%c" $delimiter) nil t))
+      (if $end-pos
+	  (progn
+	    (setq $end-pos (- $end-pos 1))
+	    (backward-sexp)
+	    (setq $temp-pos (+ (point) 1))
+	    (delete-region $temp-pos $end-pos)
+	    (emacspeak-auditory-icon 'modified-object)
+	    (emacspeak-speak-line))
+	(emacspeak-auditory-icon 'off)))))
 
-;; For testing purpose
+(defun vine-i-key-pressed()
+  "Handle when user press 'i' key"
+  (interactive)
+  (if (string-equal $vine-leader-command $vine-delete-command)
+      (vine-delete-inside-delemiter)
+    (vine-insert-mode)))
+
+ ;; For testing purpose
 (setq $vine-active-mode $vine-initial-state)
