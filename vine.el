@@ -13,6 +13,7 @@
 (defvar $vine-white-list-mode
   '(
     "emacs-lisp-mode"
+"text-mode"
     "lisp-interaction-mode"
     )
   "Holds the list of major mode where vine can run")
@@ -43,7 +44,7 @@
 	("o" (lambda () (interactive) (vine-insert-blank-line)))
 	("O" (lambda () (interactive) (vine-insert-blank-line t)))
 ("r" emacspeak-speak-line)
-("u" undo-tre)
+("u" vine-u-key-pressed)
 ("v"vine-visual-mode)
 ("V"(lambda () (interactive) (vine-visual-mode t)))
 	("w" (lambda() (interactive)  (vine-forward-word t)))
@@ -256,6 +257,38 @@ By default it inserts below current line"
       (progn
 	(goto-char $start-pos)
 	(emacspeak-auditory-icon 'off)))))
+  
+(defun vine-delete-until-char()
+  "Delete from point until target char."
+  (interactive)
+  (save-excursion
+    (let (
+	  ($start-pos (point))
+	  $end-pos
+	  $char 
+	  )
+      (setq $char (read-char ""))
+      (setq $end-pos (search-forward (format "%c" $char) nil t))
+      ;; We do not limit search on single line
+					;therefore no need to check $end-pos line numbert
+      (if $end-pos
+	  (progn
+	    (delete-region $start-pos (- $end-pos 1))
+	    (emacspeak-auditory-icon 'modified-object))
+	(progn
+	  (emacspeak-auditory-icon 'off)))
+      (vine-reset-state))))
 
-    ;; For testing purpose
+(defun vine-u-key-pressed ()
+  "Handle event where user press 'u' key"
+  (interactive)
+  (if (string-equal $vine-leader-command $vine-delete-command)
+      (vine-delete-until-char)
+    (progn
+      (unless (undo-tree-undo)
+	  (progn
+	    (emacspeak-auditory-icon 'modified-object)
+	    (emacspeak-speak-line))))))
+
+;; For testing purpose
 (setq $vine-active-mode $vine-initial-state)
