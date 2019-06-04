@@ -158,10 +158,14 @@ The number of char depend on $vine-counter"
     (if (string-equal $vine-leader-command $vine-delete-command)
 	(progn
 	  ;; Delete word
-	  (kill-word $counter)
-	  (vine-reset-state)
-	  (emacspeak-speak-line)
-	  (emacspeak-auditory-icon 'modified-object))
+	  ;; If $counter is 1 then call interactively to have the deleted word spoken
+	  (if (= $counter 1)
+	      (call-interactively 'kill-word)
+	    (progn
+	      (kill-word $counter)
+	      (emacspeak-speak-line)
+	      (emacspeak-auditory-icon 'modified-object)))
+	  (vine-reset-state))
       (progn
 	;; Usual forward word 
 	(unless FORWARD
