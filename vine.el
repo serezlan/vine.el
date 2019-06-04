@@ -31,6 +31,7 @@
 	("9" (lambda () (interactive) (vine-append-counter-value "9")))
 	("0"vine-zero-key-press)
 	("b" (lambda() (interactive)  (vine-forward-word nil)))
+	("c" vine-copy-region)
 	("d" vine-delete)
 	("D" duplicate-current-line)
 	("f" vine-find-char-in-line)
@@ -332,6 +333,13 @@ $delimiter
   (if (region-active-p)
       (call-interactively 'kill-region)
     (call-interactively 'delete-forward-char)))
-  
- ;; For testing purpose
+
+(defun vine-copy-region()
+  "Copy region to kill ring"
+  (interactive)
+  (if (region-active-p)
+      (call-interactively 'kill-ring-save)
+    (emacspeak-auditory-icon 'off)))
+
+;; For testing purpose
 (setq $vine-active-mode $vine-initial-state)
