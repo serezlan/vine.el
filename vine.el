@@ -13,6 +13,8 @@
 (defvar $vine-white-list-mode
   '(
     "emacs-lisp-mode"
+    "sh-mode"
+    "fundamental-mode"
 "text-mode"
     "lisp-interaction-mode"
     )
