@@ -339,6 +339,7 @@ By default it inserts below current line"
       (if $end-pos
 	  (progn
 	    (delete-region $start-pos (- $end-pos 1))
+	    (emacspeak-speak-line)
 	    (emacspeak-auditory-icon 'modified-object))
 	(progn
 	  (emacspeak-auditory-icon 'off)))
