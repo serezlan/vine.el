@@ -1,0 +1,13 @@
+*  Description 
+
+Vine is a emacs minor mode to emulate vim navigation keys on emacs
+
+It is created due to evil-mode is inaccessible with emacspeak
+
+* Usage
+
+- Clone this repo
+- Load using (load-file)
+- Make sure that the major -mode is in $vine-white-list
+  For example, to use vine on go-mode, add "go-mode" to $vine-white-mode 
+
