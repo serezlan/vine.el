@@ -36,7 +36,7 @@
 	("0"vine-zero-key-press)
 	("a" vine-undefined-key)
 	("A" vine-undefined-key)
-	("b" vine-undefined-key)
+	("b" (lambda() (interactive)  (vine-forward-word nil)))
 	("B" vine-undefined-key)
 	("c" vine-copy-region)
 	("C" vine-undefined-key)
@@ -77,8 +77,8 @@
 ("u" vine-u-key-pressed)
 ("v"vine-visual-mode)
 ("V"(lambda () (interactive) (vine-visual-mode t)))
-	("w" (lambda() (interactive)  (vine-forward-word t)))
-	("W" (lambda() (interactive)  (vine-forward-word nil)))
+("w" (lambda() (interactive)  (vine-forward-word t)))
+("W" vine-undefined-key)
 	("x" vine-delete-char)
 	("X" vine-undefined-key)
 	("y" vine-undefined-key)
@@ -197,12 +197,14 @@ The number of lines depends on $vine-counter"
   "If RIGHT is t then goto right char. Otherwise goto left char.
 The number of char depend on $vine-counter"
   (interactive)
-  (if RIGHT
-      (right-char (vine-get-counter-value))
-    (left-char (vine-get-counter-value)))
-  (vine-reset-state)
-  (setq current-prefix-arg 4)
-  (call-interactively 'emacspeak-speak-char))
+  (let (
+	($counter (vine-get-counter-value))
+	)
+    (setq current-prefix-arg $counter)
+    (if RIGHT
+	(call-interactively 'right-char)
+      (call-interactively 'left-char))
+    (vine-reset-state)))
 
 (defun vine-zero-key-press ()
   "If $vine-counter > 0 then append char 0 to it. Otherwise goto beginning of line"
