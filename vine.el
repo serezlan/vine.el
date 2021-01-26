@@ -12,9 +12,15 @@
 (defvar $vine-insert-mode "insert" "Define vine insert mode state value")
 (defvar $vine-white-list-mode
   '(
+    "clojurescript-mode"
+    "clojure-mode"
     "emacs-lisp-mode"
     "shell-mode"
+    "dart-mode"
     "go-mode"
+    "rjsx-mode"
+    "mhtml-mode"
+    "csharp-mode"
     "sh-mode"
     "fundamental-mode"
 "text-mode"
@@ -300,7 +306,8 @@ By default it inserts below current line"
 	(kill-whole-line $counter)
 	(vine-reset-state)
 	(emacspeak-auditory-icon 'modified-object)
-	))))
+	(emacspeak-speak-line)))))
+
 (defun vine-visual-mode (&optional LINE)
   "Start visual mode. If LINE is t then start visual line mode"
   (interactive)
